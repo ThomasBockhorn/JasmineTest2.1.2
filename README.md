@@ -71,6 +71,6 @@ Test four looked at if the toggle functionality worked.  I used `trigger()` to s
 
 The fifth test looked at if the first entry existed.  Because `loadFeed()` was asynchronous,I had to use `beforeEach()` to have the `loadFeed()` run first so the test can be performed.  I created a global variable `firstEntry` to hold the value after `loadFeed()` ran.  Then I checked if `firstEntry` was defined.
 
-# Test 6
+## Test 6
 
 The final test looked to see if `loadFeed()` did not repeat entries.  So I created two variables: `firstEntry` and `secondEntry` to hold the values.  Then after the function loaded, I tested to see if they were not equal.
