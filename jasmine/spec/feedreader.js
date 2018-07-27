@@ -21,75 +21,53 @@ $(function() {
          * allFeeds in app.js to be an empty array and refresh the
          * page?
          */
-        it('are defined', function() {
+        it('allFeeds exists and has a length greater than 0', function() {
             expect(allFeeds).toBeDefined();
             expect(allFeeds.length).not.toBe(0);
         });
 
-
-        /* TODO: Write a test that loops through each feed
-         * in the allFeeds object and ensures it has a URL defined
-         * and that the URL is not empty.
-         */
-         for(let i = 0; i < allFeeds.length; i++){
-            //This test looks to see if all the url in allFeeds are defined and not empty
-            it("URL is defined and is not empty", function(){
+        //This test looks to see if allFeeds array have urls that are defined
+        //and have a address specified
+        it("URL is defined and is not empty", function(){
+            for(let i = 0; i <allFeeds.length; i++){
                 expect(allFeeds[i].url).toBeDefined();
                 expect(allFeeds[i].url).not.toBe(0);
-            });
-        }
+            }
+        });
 
-        /* TODO: Write a test that loops through each feed
-         * in the allFeeds object and ensures it has a name defined
-         * and that the name is not empty.
-         */
-        for(let i = 0; i <allFeeds.length; i++){
-            it("allFeeds name are defined and not empty", function(){
-                //as with the url test, this tests to see if each feed has a name 
-                //and its not empty
+        //as with the url test, this tests to see if each feed has a name 
+        //and its not empty
+        it("allFeeds name are defined and not empty", function(){
+            for(let i = 0; i <allFeeds.length; i++){    
                 expect(allFeeds[i].name).toBeDefined();
                 expect(allFeeds[i].name).not.toBe(0);
-            });
-        }
+            }
+        });
     });
 
 
-    /* TODO: Write a new test suite named "The menu" */
+    //This test suite looks at the menu and whether it functions.
     describe("The Menu", function(){
-        /* TODO: Write a test that ensures the menu element is
-         * hidden by default. You'll have to analyze the HTML and
-         * the CSS to determine how we're performing the
-         * hiding/showing of the menu element.
-         */
+        //This test looks to see if menu-hidden class is there.
+        //If it is, then the menu is hidden by default
         it("Menu is hidden by default", function(){
-            //This test looks to see if menu-hidden class is there.
-            //If it is, then the menu is hidden by default
-            expect($("body").hasClass("menu-hidden")).toBeTruthy();
+             expect($("body").hasClass("menu-hidden")).toBe(true);
         });
-         /* TODO: Write a test that ensures the menu changes
-          * visibility when the menu icon is clicked. This test
-          * should have two expectations: does the menu display when
-          * clicked and does it hide when clicked again.
-          */
+        
+        //These two tests checks to see if there is functionality in the menu
+        //button.  The trigger simulates it then sees if the menu-hidden gets toggled
         var menuIcon = $('.menu-icon-link');
         it("should change visibility when the menu icon is clicked", function() {
-            //These two tests checks to see if there is functionality in the menu
-            //button.  The trigger simulates it then sees if the menu-hidden gets toggled
             menuIcon.trigger('click');
-            expect($("body").hasClass('menu-hidden')).toBeFalsy();
+            expect($("body").hasClass('menu-hidden')).toBe(false);
             
             menuIcon.trigger('click');
-            expect($("body").hasClass('menu-hidden')).toBeTruthy();
+            expect($("body").hasClass('menu-hidden')).toBe(true);
         });
     });   
     /* TODO: Write a new test suite named "Initial Entries" */
     describe("Initial Entries", function(){
-        /* TODO: Write a test that ensures when the loadFeed
-         * function is called and completes its work, there is at least
-         * a single .entry element within the .feed container.
-         * Remember, loadFeed() is asynchronous so this test will require
-         * the use of Jasmine's beforeEach and asynchronous done() function.
-         */
+        
         var firstEntry;
         //Necessary since the function is asynchronous.  The function needs to be
         //called first and completed in order for the test to be preformed.
@@ -104,29 +82,29 @@ $(function() {
             expect(firstEntry).toBeDefined();
         });
     });
-    /* TODO: Write a new test suite named "New Feed Selection" */
+
+    //This test suite looks if the feed actually works
     describe("New Feed Selection", function(){
-        /* TODO: Write a test that ensures when a new feed is loaded
-         * by the loadFeed function that the content actually changes.
-         * Remember, loadFeed() is asynchronous.
-         */
+        //Since loadFeed is asynchronous, we need to use a beforeEach function
+        //to gather the data to be tested on
         var firstEntry;
         var secondEntry;
 
         //Necessary because the function is asynchronous
         beforeEach(function(done){
             loadFeed(0, function(){
-                firstEntry = allFeeds[0];
-                done();
-            });
-            loadFeed(1, function(){
-                secondEntry = allFeeds[1];
-                done();
+                firstEntry = $(".feed").html();
+                
+                //Getting the second entry
+                loadFeed(1, function(){
+                    secondEntry = $(".feed").html();
+                    done();
+                });
             });
         });
+        //This checks for duplication with first and second entry when loadFeed(0)
+        //and loadFeed(1) are called.
         it("Content changes", function(){
-            //This checks for duplication with first and second entry when loadFeed(0)
-            //and loadFeed(1) are called.
             expect(firstEntry).not.toBe(secondEntry);
         });
     });
